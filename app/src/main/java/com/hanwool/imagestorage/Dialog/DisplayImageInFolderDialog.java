@@ -18,20 +18,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.hanwool.imagestorage.Adapter.AllImageInFolderStorageAdapter;
-import com.hanwool.imagestorage.Adapter.AllImageInFolderStorageAdapter;
-import com.hanwool.imagestorage.DisplayImageActivity;
+
+import com.hanwool.imagestorage.Adapter.DisplayImageInFolderAdapter;
 import com.hanwool.imagestorage.Fragment.AllImageStorageFragment;
+import com.hanwool.imagestorage.Fragment.DisplayImgInFolderFragment;
 import com.hanwool.imagestorage.R;
 
 public class DisplayImageInFolderDialog extends Dialog {
-    Activity a;
+    Context a;
     ImageView imgBack, imgNext, imgDisplay;
     int width, height;
 
     int index = 0;
 
-    public DisplayImageInFolderDialog(@NonNull Activity b) {
+    public DisplayImageInFolderDialog(@NonNull Context b) {
         super(b);
         this.a = b;
     }
@@ -44,7 +44,7 @@ public class DisplayImageInFolderDialog extends Dialog {
         imgBack = findViewById(R.id.imgBack);
         imgNext = findViewById(R.id.imgNext);
         imgDisplay = findViewById(R.id.imgDisplay);
-        index = AllImageInFolderStorageAdapter.index;
+        index = DisplayImageInFolderAdapter.index;
         WindowManager manager = (WindowManager) a.getSystemService(Activity.WINDOW_SERVICE);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
             width = manager.getDefaultDisplay().getWidth();
@@ -59,7 +59,7 @@ public class DisplayImageInFolderDialog extends Dialog {
         DisplayForImageInFolder();
     }
     public void DisplayForImageInFolder() {
-        index = AllImageInFolderStorageAdapter.index;
+        index = DisplayImageInFolderAdapter.index;
         displayImageInFolder(index);
         imgBack.setOnClickListener(new View.OnClickListener() {
 
@@ -68,7 +68,7 @@ public class DisplayImageInFolderDialog extends Dialog {
             public void onClick(View view) {
 //                int index = AllImageInFolderStorageAdapter.index;
                 int count = 0;
-                index = index > 0 ? (index - count - 1) : DisplayImageActivity.arrImage.size() - 1;
+                index = index > 0 ? (index - count - 1) : DisplayImgInFolderFragment.arrImageInFolder.size() - 1;
                 displayImageInFolder(index);
                 count = count - 1;
             }
@@ -78,7 +78,7 @@ public class DisplayImageInFolderDialog extends Dialog {
             public void onClick(View view) {
 //                int index = AllImageInFolderStorageAdapter.index;
                 int count = 0;
-                index = index < DisplayImageActivity.arrImage.size() - 1 ? (index + count + 1) : 0;
+                index = index < DisplayImgInFolderFragment.arrImageInFolder.size() - 1 ? (index + count + 1) : 0;
                 displayImageInFolder(index);
                 count += 1;
             }
@@ -90,7 +90,7 @@ public class DisplayImageInFolderDialog extends Dialog {
         requestOptions.error(R.drawable.ic_sentiment_very_dissatisfied_black_24dp);
         requestOptions.override(width, height);
         Glide.with(a).setDefaultRequestOptions(requestOptions)
-                .load("file://" + DisplayImageActivity.arrImage.get(i).getPath())
+                .load("file://" + DisplayImgInFolderFragment.arrImageInFolder.get(i).getPath())
 
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)

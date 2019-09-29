@@ -12,10 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.hanwool.imagestorage.Adapter.FolderStorageAdapter;
 import com.hanwool.imagestorage.Model.FolderStorage;
-import com.hanwool.imagestorage.Model.PathAndName;
 import com.hanwool.imagestorage.R;
 
 import java.io.File;
@@ -26,19 +26,19 @@ import java.util.Comparator;
 public class FolderFragment extends Fragment {
     View view;
     ArrayList<FolderStorage> arrayList;
-    ArrayList<FolderStorage> arrFolder;
+   public static ArrayList<FolderStorage> arrFolder;
     FolderStorageAdapter folderStorageAdapter;
     RecyclerView lstFolder;
     private boolean isFragmentLoaded =false;
     File file;
-
+public static  ViewPager viewPager;
     public FolderFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.folder_fol_time,container, false);
+        view = inflater.inflate(R.layout.folder_fragment,container, false);
         return view;
     }
     private void doStuff() {

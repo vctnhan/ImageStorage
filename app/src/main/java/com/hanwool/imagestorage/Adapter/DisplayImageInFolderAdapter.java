@@ -1,7 +1,7 @@
 package com.hanwool.imagestorage.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.hanwool.imagestorage.Dialog.DisplayImageDialog;
-import com.hanwool.imagestorage.Dialog.DisplayImageInFolderDialog;
+import com.hanwool.imagestorage.EditImageActivity;
 import com.hanwool.imagestorage.Model.ImageStorage;
 import com.hanwool.imagestorage.R;
 
 import java.util.ArrayList;
 
-public class AllImageInFolderStorageAdapter extends RecyclerView.Adapter<AllImageInFolderStorageAdapter.ItemHolder> {
+public class DisplayImageInFolderAdapter extends RecyclerView.Adapter<DisplayImageInFolderAdapter.ItemHolder> {
     Context context;
     ArrayList<ImageStorage> arrImage;
 public static int index = 0;
-    public AllImageInFolderStorageAdapter(Context context, ArrayList<ImageStorage> arrImage) {
+    public DisplayImageInFolderAdapter(Context context, ArrayList<ImageStorage> arrImage) {
         this.context = context;
         this.arrImage = arrImage;
     }
@@ -57,8 +56,9 @@ holder.imgAllImage.setOnClickListener(new View.OnClickListener() {
     public void onClick(View view) {
         Toast.makeText(context,arrImage.get(position).getDate(),Toast.LENGTH_SHORT).show();
         index = position;
-        DisplayImageInFolderDialog displayImageInFolderDialog = new DisplayImageInFolderDialog((Activity) context);
-        displayImageInFolderDialog.show();
+        Intent i = new Intent(context, EditImageActivity.class);
+        i.putExtra("imgPath", arrImage.get(position).getPath());
+        context.startActivity(i);
     }
 });
     }

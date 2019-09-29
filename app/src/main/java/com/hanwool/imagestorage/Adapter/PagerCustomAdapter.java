@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.hanwool.imagestorage.Fragment.AllImageStorageFragment;
+import com.hanwool.imagestorage.Fragment.DisplayImgInFolderFragment;
 import com.hanwool.imagestorage.Fragment.ExplorerFragment;
 import com.hanwool.imagestorage.Fragment.FolderFragment;
 

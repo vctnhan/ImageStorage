@@ -9,9 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hanwool.imagestorage.DisplayImageActivity;
+import com.hanwool.imagestorage.Fragment.DisplayImgInFolderFragment;
+import com.hanwool.imagestorage.Fragment.FolderFragment;
 import com.hanwool.imagestorage.Model.FolderStorage;
 import com.hanwool.imagestorage.R;
 
@@ -22,6 +28,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class FolderStorageAdapter extends RecyclerView.Adapter<FolderStorageAdapter.ItemHolder> {
     Context context;
     ArrayList<FolderStorage> arrFolder;
+    public static int index = 0;
 
     public FolderStorageAdapter(Context context, ArrayList<FolderStorage> arrFolder) {
         this.context = context;
@@ -47,7 +54,7 @@ public class FolderStorageAdapter extends RecyclerView.Adapter<FolderStorageAdap
 
         String name = arrFolder.get(position).getPath().substring(arrFolder.get(position).getPath().lastIndexOf('/')).replace('/', ' ').trim();
         holder.txtFolder.setText(name);
-        Log.e(TAG, "tempexxx " + name );
+        Log.e(TAG, "tempexxx " + name);
     }
 
     @Override
@@ -63,12 +70,15 @@ public class FolderStorageAdapter extends RecyclerView.Adapter<FolderStorageAdap
             txtFolder = itemView.findViewById(R.id.txtFolderName);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-               public void onClick(View view) {
-                   Intent intent = new Intent(context, DisplayImageActivity.class);
-                   intent.putExtra("display",arrFolder.get(getPosition()).getPath());
-                   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                   context.startActivity(intent); }
-           });
+                public void onClick(View view) {
+                    index = getPosition();
+                    DisplayImgInFolderFragment displayImgInFolderFragment = new DisplayImgInFolderFragment();
+                    FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frameLayout, displayImgInFolderFragment); // give your fragment container id in first parameter
+                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                    transaction.commit();
+                }
+            });
         }
     }
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EditImageActivity"
+    >
+
+    <FrameLayout
+        android:id="@+id/viewToSave"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:layout_weight="10"
+        >
+        <ImageView
+            android:id="@+id/imgNeedToEdit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+        />
+        <com.hanwool.imagestorage.Anim.BubbleView
+            android:id="@+id/bubbleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
+        <com.hanwool.imagestorage.Anim.LeavesView
+            android:id="@+id/leavesView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
+        <com.hanwool.imagestorage.Anim.SnowView
+            android:id="@+id/snowView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
+        <FrameLayout
+            android:id="@+id/frameLayoutEmoji"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.hanwool.imagestorage.CustomView.Custom_ImageViewWithScaleAndMove
+                android:id="@+id/imgIcon"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                 />
+        </FrameLayout>
+
+    </FrameLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnSnowEffect"
+            android:layout_weight="1"
+            android:text="Snow Effect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btnLeavesEffect"
+            android:layout_weight="1"
+            android:text="Leaves Effect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btnBubbleEffect"
+            android:layout_weight="1"
+            android:text="Bubble Effect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btnSaveImage"
+            android:layout_weight="1"
+            android:text="Save Image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <com.hanwool.imagestorage.CustomView.Custom_HorizonalView
+        android:id="@+id/horizontalView"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        app:amount="10"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginLeft="3dp"
+        />
+</LinearLayout>

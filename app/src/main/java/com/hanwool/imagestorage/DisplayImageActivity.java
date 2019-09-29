@@ -9,8 +9,9 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 
-import com.hanwool.imagestorage.Adapter.AllImageInFolderStorageAdapter;
+
 import com.hanwool.imagestorage.Adapter.AllImageStorageAdapter;
+import com.hanwool.imagestorage.Adapter.DisplayImageInFolderAdapter;
 import com.hanwool.imagestorage.Fragment.AllImageStorageFragment;
 import com.hanwool.imagestorage.Model.ImageStorage;
 
@@ -30,7 +31,7 @@ public class DisplayImageActivity extends AppCompatActivity {
     RecyclerView lstAllImage;
     ArrayList<ImageStorage> arrayList;
     public static ArrayList<ImageStorage> arrImage;
-    AllImageInFolderStorageAdapter allImageInFolderStorageAdapter;
+    DisplayImageInFolderAdapter allImageInFolderStorageAdapter;
     private boolean isFragmentLoaded = false;
     File file;
 
@@ -55,7 +56,7 @@ public class DisplayImageActivity extends AppCompatActivity {
         Log.e(TAG, "getFiledusss: " + arrImage.get(0).getDate());
         Collections.sort(arrImage, new StringDateComparator());
         MainActivity.progressBar.setVisibility(View.GONE);
-        allImageInFolderStorageAdapter = new AllImageInFolderStorageAdapter(DisplayImageActivity.this, arrImage);
+        allImageInFolderStorageAdapter = new DisplayImageInFolderAdapter(DisplayImageActivity.this, arrImage);
         //  Log.e("datetime", "datetime dostuff " + " ? " + arrImage.size());
         lstAllImage.hasFixedSize();
         lstAllImage.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));

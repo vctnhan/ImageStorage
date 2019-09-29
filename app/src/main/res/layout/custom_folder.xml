@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:orientation="horizontal"
-    android:background="#e4e8f2">
+    android:background="@drawable/state_press_folder">
     <ImageView
         android:id="@+id/imgFolder"
         android:layout_width="0dp"

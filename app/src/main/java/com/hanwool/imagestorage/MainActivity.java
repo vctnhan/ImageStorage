@@ -28,21 +28,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSON_REQUEST);
+        //check permisssion
+        if ((ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+            if ((ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) && (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE))) {
+
             } else {
                 ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSON_REQUEST);
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                        100);
             }
-        } else {
-
-        doStuff();
-    }
+        }else {
+            doStuff();
+        }
 
 }
     private void doStuff() {
@@ -64,21 +65,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         switch (requestCode) {
-            case MY_PERMISSON_REQUEST: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ContextCompat.checkSelfPermission(MainActivity.this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            case 100: {
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults.length > 0 && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "Permisson granted", Toast.LENGTH_SHORT).show();
                         doStuff();
+                    } else {
+                        Toast.makeText(this, "No permisson granted", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
-                } else {
-                    Toast.makeText(this, "No permisson granted", Toast.LENGTH_SHORT).show();
-                    finish();
                 }
-                return;
             }
         }
     }
