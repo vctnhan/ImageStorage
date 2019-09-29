@@ -10,13 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CustomView.TestScaleAndMoveActivity">
-
-        </activity>
         <activity android:name=".EditImageActivity">
-
-        </activity>
-        <activity android:name=".CustomView.TextviewscaleandmoveActivity">
 
         </activity>
         <activity android:name=".DisplayImageActivity" />

@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<com.hanwool.imagestorage.CustomView.Custom_ImageViewWithScaleAndMove
+<com.hanwool.imagestorage.customview.Custom_ImageViewWithScaleAndMove
     android:layout_width="150dp"
     android:layout_height="150dp"
     android:id="@+id/imgEmoji"

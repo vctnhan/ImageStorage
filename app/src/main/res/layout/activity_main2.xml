@@ -21,19 +21,19 @@
             android:layout_height="match_parent"
 
         />
-        <com.hanwool.imagestorage.Anim.BubbleView
+        <com.hanwool.imagestorage.anim.BubbleView
             android:id="@+id/bubbleView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
             />
-        <com.hanwool.imagestorage.Anim.LeavesView
+        <com.hanwool.imagestorage.anim.LeavesView
             android:id="@+id/leavesView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
             />
-        <com.hanwool.imagestorage.Anim.SnowView
+        <com.hanwool.imagestorage.anim.SnowView
             android:id="@+id/snowView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.hanwool.imagestorage.CustomView.Custom_ImageViewWithScaleAndMove
+            <com.hanwool.imagestorage.customview.Custom_ImageViewWithScaleAndMove
                 android:id="@+id/imgIcon"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <com.hanwool.imagestorage.CustomView.Custom_HorizonalView
+    <com.hanwool.imagestorage.customview.Custom_HorizonalView
         android:id="@+id/horizontalView"
         android:layout_width="match_parent"
         android:layout_height="70dp"

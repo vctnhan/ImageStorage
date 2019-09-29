@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top">
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imgNeedToEdit"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:src="@drawable/logo" />-->
+
+        <com.hanwool.imagestorage.customview.Custom_ImageViewWithScaleAndMove
+            android:id="@+id/imgIcon"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            app:src="@mipmap/ic_launcher" />
+    </FrameLayout>
+
+    <com.hanwool.imagestorage.customview.Custom_HorizonalView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:id="@+id/horizontalView"
+        app:amount="5"/>
+</merge>

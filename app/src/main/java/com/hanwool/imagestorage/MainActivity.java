@@ -1,6 +1,5 @@
 package com.hanwool.imagestorage;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -16,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
-import com.hanwool.imagestorage.Adapter.PagerCustomAdapter;
+import com.hanwool.imagestorage.adapter.PagerCustomAdapter;
 
 public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 ActivityCompat.requestPermissions(MainActivity.this,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
-                        100);
+                        REQ_CODE_SPEECH_INPUT);
             }
         }else {
             doStuff();
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch (requestCode) {
-            case 100: {
+            case REQ_CODE_SPEECH_INPUT: {
                 for (int i = 0; i < grantResults.length; i++) {
                     if (grantResults.length > 0 && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "Permisson granted", Toast.LENGTH_SHORT).show();

@@ -5,14 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".customview.TextviewscaleandmoveActivity">
-
-    <ImageView
-        android:id="@+id/imgTest"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:background="#f2f2"
-         />
-
+    tools:context=".customview.TestScaleAndMoveActivity">
+<com.hanwool.imagestorage.customview.Custom_ImageViewWithScaleAndMove
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    app:src="@drawable/logo"
+    />
 </LinearLayout>

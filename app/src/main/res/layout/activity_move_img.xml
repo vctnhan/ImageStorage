@@ -5,7 +5,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CustomView.MoveImgActivity">
+    tools:context=".customview.MoveImgActivity">
 
 <!--    <com.hanwool.imagestorage.TestCustomView.CustomImageViewWithZoomAndMove-->
 <!--        android:layout_width="150dp"-->

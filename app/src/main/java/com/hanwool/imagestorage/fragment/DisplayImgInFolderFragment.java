@@ -1,16 +1,22 @@
-package com.hanwool.imagestorage;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.hanwool.imagestorage.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.hanwool.imagestorage.adapter.DisplayImageInFolderAdapter;
+import com.hanwool.imagestorage.adapter.FolderStorageAdapter;
+import com.hanwool.imagestorage.MainActivity;
 import com.hanwool.imagestorage.model.ImageStorage;
+import com.hanwool.imagestorage.R;
 
 import java.io.File;
 import java.text.ParseException;
@@ -23,41 +29,46 @@ import java.util.Locale;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class DisplayImageActivity extends AppCompatActivity {
+public class DisplayImgInFolderFragment extends Fragment {
     View view;
     RecyclerView lstAllImage;
     ArrayList<ImageStorage> arrayList;
-    public static ArrayList<ImageStorage> arrImage;
-    DisplayImageInFolderAdapter allImageInFolderStorageAdapter;
+    public static ArrayList<ImageStorage> arrImageInFolder;
+    DisplayImageInFolderAdapter displayImageInFolderAdapter;
     private boolean isFragmentLoaded = false;
     File file;
 
+
+    public DisplayImgInFolderFragment() {
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_image);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.display_img_in_folder_fragment, container, false);
         doStuff();
+        return view;
     }
 
     private void doStuff() {
 
         arrayList = new ArrayList<>();
-        lstAllImage = findViewById(R.id.lstDisplayImage);
-        file = new File(getIntent().getStringExtra("display"));
+        lstAllImage = view.findViewById(R.id.lstAllImage);
+        file = new File(FolderFragment.arrFolder.get(FolderStorageAdapter.index).getPath());
         getFile(file);
-        arrImage = new ArrayList<>();
+        arrImageInFolder = new ArrayList<>();
         for (int i = 0; i < arrayList.size(); i++) {
             ImageStorage imageStorage = arrayList.get(i);
-            arrImage.add(new ImageStorage(imageStorage.getPath(), imageStorage.getDate()));
+            arrImageInFolder.add(new ImageStorage(imageStorage.getPath(), imageStorage.getDate()));
         }
-        Log.e(TAG, "getFiledusss: " + arrImage.get(0).getDate());
-        Collections.sort(arrImage, new StringDateComparator());
+        Log.e(TAG, "getFile: " + arrImageInFolder.get(0).getDate());
+        Collections.sort(arrImageInFolder, new DisplayImgInFolderFragment.StringDateComparator());
         MainActivity.progressBar.setVisibility(View.GONE);
-        allImageInFolderStorageAdapter = new DisplayImageInFolderAdapter(DisplayImageActivity.this, arrImage);
+        displayImageInFolderAdapter = new DisplayImageInFolderAdapter(getContext(), arrImageInFolder);
         //  Log.e("datetime", "datetime dostuff " + " ? " + arrImage.size());
         lstAllImage.hasFixedSize();
-        lstAllImage.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
-        lstAllImage.setAdapter(allImageInFolderStorageAdapter);
+        lstAllImage.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        lstAllImage.setAdapter(displayImageInFolderAdapter);
         // getFromStorage();
 
 
@@ -98,7 +109,15 @@ public class DisplayImageActivity extends AppCompatActivity {
 
 
     }
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && !isFragmentLoaded) {
+            // Load your data here or do network operations here
+            doStuff();
+            isFragmentLoaded = true;
+        }
+    }
     class StringDateComparator implements Comparator<ImageStorage> {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 
