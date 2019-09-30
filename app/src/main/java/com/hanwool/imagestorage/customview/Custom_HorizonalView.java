@@ -2,13 +2,16 @@ package com.hanwool.imagestorage.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -47,7 +50,7 @@ public class Custom_HorizonalView extends RelativeLayout {
         horizontal_recycler_view.setLayoutManager(horizontalLayoutManager);
         horizontal_recycler_view.setAdapter(horizontalAdapter);
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.Custom_HorizonalView);
-        size = typedArray.getInt(R.styleable.Custom_HorizonalView_amount, 0);
+        size = typedArray.getInt(R.styleable.Custom_HorizonalView_amountItem, 0);
 
         typedArray.recycle();
     }
@@ -58,27 +61,35 @@ public class Custom_HorizonalView extends RelativeLayout {
         inflater.inflate(R.layout.horizontalview_, this);
     }
 
+    public int getDrawableId(Context context, String name) {
+        return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+    }
+
     public List<Data> fill_with_data() {
 
         List<Data> data = new ArrayList<>();
 //        for (int i = 0; i < size; i++) {
-//            data.add(new Data(getResources().getDrawable(R.drawable.vozis_), "Image " + (i + 1)));
+//            int resourceId = this.getResources().
+//                    getIdentifier("R.drawable.vozis_"+(i+1), "string", context.getPackageName());
+//            data.add(new Data(resourceId));
+////            Toast.makeText(context,
+////                    String.valueOf(getDrawableId(context, "R.drawable.vozis_" + (i+1))),Toast.LENGTH_SHORT).show();
 //        }
-        data.add(new Data(R.drawable.vozis_1, "Image 1"));
-        data.add(new Data(R.drawable.vozis_2, "Image 2"));
-        data.add(new Data(R.drawable.vozis_3, "Image 3"));
-        data.add(new Data(R.drawable.vozis_4, "Image 4"));;
-//        data.add(new Data(R.drawable.ic_launcher_foreground, "Image 1"));
-//        data.add(new Data(R.drawable.ic_launcher_foreground, "Image 2"));
-//        data.add(new Data(R.drawable.ic_launcher_foreground, "Image 3"));
 
+        data.add(new Data(R.drawable.vozis_1));
+        data.add(new Data(R.drawable.vozis_2));
+        data.add(new Data(R.drawable.vozis_3));
+        data.add(new Data(R.drawable.vozis_4));;
+        data.add(new Data(R.drawable.vozis_5));
+        data.add(new Data(R.drawable.vozis_6));
+        data.add(new Data(R.drawable.vozis_7));
 
         return data;
     }
 
     public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.MyViewHolder> {
 
-        List<Data> horizontalList ;
+        List<Data> horizontalList;
 
         Context context;
 
@@ -97,7 +108,7 @@ public class Custom_HorizonalView extends RelativeLayout {
             public MyViewHolder(View view) {
                 super(view);
                 imageView = view.findViewById(R.id.imageview);
-                txtview =  view.findViewById(R.id.txtview);
+                txtview = view.findViewById(R.id.txtview);
             }
         }
 
@@ -111,16 +122,11 @@ public class Custom_HorizonalView extends RelativeLayout {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
-
             holder.imageView.setImageResource(horizontalList.get(position).imageId);
-            holder.txtview.setText(horizontalList.get(position).txt);
-
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
 
                 public void onClick(View v) {
-                    String list = horizontalList.get(position).txt.toString();
                     Custom_HorizonalView.ImageId = horizontalList.get(position).getImageId();
                     DisplayEmojiOnEditImageFragment displayEmojiOnEditImageFragment = new DisplayEmojiOnEditImageFragment();
                     FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();

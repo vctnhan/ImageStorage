@@ -39,7 +39,6 @@ public class AllImageStorageAdapter extends RecyclerView.Adapter<AllImageStorage
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.ic_sync_black_24dp);
         requestOptions.error(R.drawable.ic_sentiment_very_dissatisfied_black_24dp);
@@ -49,13 +48,10 @@ public class AllImageStorageAdapter extends RecyclerView.Adapter<AllImageStorage
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(holder.imgAllImage);
-        //
 
         holder.imgAllImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-              //  Toast.makeText(context, arrImage.get(position).getDate(), Toast.LENGTH_SHORT).show();
                 index = position;
 //                DisplayImageDialog displayImageDialog = new DisplayImageDialog((Activity) context);
 //                displayImageDialog.show();

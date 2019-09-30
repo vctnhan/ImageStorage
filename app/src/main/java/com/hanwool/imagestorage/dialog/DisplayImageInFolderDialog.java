@@ -18,7 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import com.hanwool.imagestorage.adapter.DisplayImageInFolderAdapter;
-import com.hanwool.imagestorage.fragment.DisplayImgInFolderFragment;
+import com.hanwool.imagestorage.fragment.ImageInFolderFragment;
 import com.hanwool.imagestorage.R;
 
 public class DisplayImageInFolderDialog extends Dialog {
@@ -65,7 +65,7 @@ public class DisplayImageInFolderDialog extends Dialog {
             public void onClick(View view) {
 //                int index = AllImageInFolderStorageAdapter.index;
                 int count = 0;
-                index = index > 0 ? (index - count - 1) : DisplayImgInFolderFragment.arrImageInFolder.size() - 1;
+                index = index > 0 ? (index - count - 1) : ImageInFolderFragment.arrImageInFolder.size() - 1;
                 displayImageInFolder(index);
                 count = count - 1;
             }
@@ -75,7 +75,7 @@ public class DisplayImageInFolderDialog extends Dialog {
             public void onClick(View view) {
 //                int index = AllImageInFolderStorageAdapter.index;
                 int count = 0;
-                index = index < DisplayImgInFolderFragment.arrImageInFolder.size() - 1 ? (index + count + 1) : 0;
+                index = index < ImageInFolderFragment.arrImageInFolder.size() - 1 ? (index + count + 1) : 0;
                 displayImageInFolder(index);
                 count += 1;
             }
@@ -87,7 +87,7 @@ public class DisplayImageInFolderDialog extends Dialog {
         requestOptions.error(R.drawable.ic_sentiment_very_dissatisfied_black_24dp);
         requestOptions.override(width, height);
         Glide.with(a).setDefaultRequestOptions(requestOptions)
-                .load("file://" + DisplayImgInFolderFragment.arrImageInFolder.get(i).getPath())
+                .load("file://" + ImageInFolderFragment.arrImageInFolder.get(i).getPath())
 
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)

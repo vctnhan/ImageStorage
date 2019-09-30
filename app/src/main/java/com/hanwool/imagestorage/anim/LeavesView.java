@@ -14,7 +14,7 @@ import com.hanwool.imagestorage.R;
 public class LeavesView extends View {
     private static final int NUM_SNOWFLAKES = 30;
     private static final int DELAY = 5;
-
+    Bitmap bitmap;
     private LeavesModel[] snowflakes;
 
     public LeavesView(Context context) {
@@ -23,6 +23,8 @@ public class LeavesView extends View {
 
     public LeavesView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Resources res = getResources();
+        bitmap = BitmapFactory.decodeResource(res, R.drawable.lathuroi);
     }
 
     public LeavesView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -50,9 +52,9 @@ public class LeavesView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Resources res = getResources();
-        Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.lathuroi);
+
         Bitmap b = Bitmap.createScaledBitmap(bitmap, 120, 120, false);
+
         for (LeavesModel snowFlake : snowflakes) {
             snowFlake.draw(canvas, b);
         }

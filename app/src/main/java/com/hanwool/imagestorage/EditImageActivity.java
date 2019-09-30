@@ -15,11 +15,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.hanwool.imagestorage.adapter.AllImageStorageAdapter;
 import com.hanwool.imagestorage.anim.BubbleView;
 import com.hanwool.imagestorage.anim.LeavesView;
 import com.hanwool.imagestorage.anim.SnowView;
 import com.hanwool.imagestorage.customview.Custom_HorizonalView;
 import com.hanwool.imagestorage.customview.Custom_ImageViewWithScaleAndMove;
+import com.hanwool.imagestorage.fragment.AllImageStorageFragment;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,7 +45,7 @@ public class EditImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_edit_image);
 
         customHorizonalView = findViewById(R.id.horizontalView);
         imageViewWithScaleAndMove = findViewById(R.id.imgIcon);
@@ -99,6 +101,7 @@ public class EditImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getSaveImageFilePath(viewToSave);
+                AllImageStorageFragment.allImageStorageAdapter.notifyDataSetChanged();
             }
         });
     }

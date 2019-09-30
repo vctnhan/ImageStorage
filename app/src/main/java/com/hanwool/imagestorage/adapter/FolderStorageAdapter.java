@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.hanwool.imagestorage.fragment.DisplayImgInFolderFragment;
+import com.hanwool.imagestorage.fragment.ImageInFolderFragment;
 import com.hanwool.imagestorage.model.FolderStorage;
 import com.hanwool.imagestorage.R;
 
@@ -67,7 +67,7 @@ public class FolderStorageAdapter extends RecyclerView.Adapter<FolderStorageAdap
                 @Override
                 public void onClick(View view) {
                     index = getPosition();
-                    DisplayImgInFolderFragment displayImgInFolderFragment = new DisplayImgInFolderFragment();
+                    ImageInFolderFragment displayImgInFolderFragment = new ImageInFolderFragment();
                     FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frameLayout, displayImgInFolderFragment); // give your fragment container id in first parameter
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack

@@ -90,7 +90,7 @@ public static  ViewPager viewPager;
             lstFolder.hasFixedSize();
             lstFolder.setLayoutManager(new LinearLayoutManager(getContext()));
             lstFolder.setAdapter(folderStorageAdapter);
-            Log.e("folder", "file2332 " + arrFolder.get(0).getPath());
+//            Log.e("folder", "file2332 " + arrFolder.get(0).getPath());
 
         }
     }

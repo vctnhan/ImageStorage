@@ -10,7 +10,7 @@
             <attr name="android:divider" />
             <attr name="android:requiresFadingEdge" />
             <attr name="android:fadingEdgeLength" />
-            <attr name="amount" format="integer"/>
+            <attr name="amountItem" format="integer"/>
         </declare-styleable>
 
 </resources>

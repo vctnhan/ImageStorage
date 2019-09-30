@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -20,37 +21,24 @@ public class Custom_ImageViewWithScaleAndMove extends View {
     private Drawable drawable;
     private float scaleFactor = 1.0f;
     private ScaleGestureDetector scaleGestureDetector;
-    private int _xDelta;
-    private int _yDelta;
+    private int deltaX;
+    private int deltaY;
     Context context;
 
     public Custom_ImageViewWithScaleAndMove(Context context) {
         super(context);
-
 //        String pathName = "/path/to/file/xxx.jpg";
 //        bitmap b = BitmapFactory.decodeFile(pathName);
-
         drawable = context.getResources().getDrawable(R.drawable.folder_icon);
-
         setFocusable(true);
-
-
         scaleGestureDetector = new ScaleGestureDetector(context,
                 new ScaleListener());
-
-
     }
-
-    //public void setImage(Custom_ImageViewWithScaleAndMove imgView, int imgId){
-//    imgView.setBackground(i);
-//}
     public Custom_ImageViewWithScaleAndMove(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.Custom_ImageViewWithScaleAndMove);
         drawable = typedArray.getDrawable(R.styleable.Custom_ImageViewWithScaleAndMove_src);
-
-        // drawable = context.getResources().getDrawable(R.drawable.folder_icon);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             setBackground(drawable);
         }
@@ -58,7 +46,6 @@ public class Custom_ImageViewWithScaleAndMove extends View {
         setFocusable(true);
         scaleGestureDetector = new ScaleGestureDetector(context,
                 new ScaleListener());
-        Log.e("img Width", "" + getWidth());
     }
 
     @Override
@@ -69,17 +56,16 @@ public class Custom_ImageViewWithScaleAndMove extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
+        final int X = (int) event.getRawX();
+        final int Y = (int) event.getRawY();
         scaleGestureDetector.onTouchEvent(event);
         setScaleX(scaleFactor);
         setScaleY(scaleFactor);
-        final int X = (int) event.getRawX();
-        final int Y = (int) event.getRawY();
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 FrameLayout.LayoutParams lParams = (FrameLayout.LayoutParams) getLayoutParams();
-                _xDelta = X - lParams.leftMargin;
-                _yDelta = Y - lParams.topMargin;
+                deltaX = X - lParams.leftMargin;
+                deltaY = Y - lParams.topMargin;
                 break;
             case MotionEvent.ACTION_UP:
                 break;
@@ -88,12 +74,13 @@ public class Custom_ImageViewWithScaleAndMove extends View {
             case MotionEvent.ACTION_POINTER_UP:
                 break;
             case MotionEvent.ACTION_MOVE:
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) getLayoutParams();
-                layoutParams.leftMargin = X - _xDelta;
-                layoutParams.topMargin = Y - _yDelta;
-                layoutParams.rightMargin = -250;
-                layoutParams.bottomMargin = -250;
-                setLayoutParams(layoutParams);
+                    FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) getLayoutParams();
+                    layoutParams.leftMargin = X - deltaX;
+                    layoutParams.topMargin = Y - deltaY;
+                    layoutParams.rightMargin = 0;
+                    layoutParams.bottomMargin = 0;
+                    setLayoutParams(layoutParams);
+
                 break;
         }
         invalidate();

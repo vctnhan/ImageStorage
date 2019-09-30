@@ -29,7 +29,7 @@ import java.util.Locale;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class DisplayImgInFolderFragment extends Fragment {
+public class ImageInFolderFragment extends Fragment {
     View view;
     RecyclerView lstAllImage;
     ArrayList<ImageStorage> arrayList;
@@ -39,7 +39,7 @@ public class DisplayImgInFolderFragment extends Fragment {
     File file;
 
 
-    public DisplayImgInFolderFragment() {
+    public ImageInFolderFragment() {
     }
 
     @Nullable
@@ -62,7 +62,7 @@ public class DisplayImgInFolderFragment extends Fragment {
             arrImageInFolder.add(new ImageStorage(imageStorage.getPath(), imageStorage.getDate()));
         }
         Log.e(TAG, "getFile: " + arrImageInFolder.get(0).getDate());
-        Collections.sort(arrImageInFolder, new DisplayImgInFolderFragment.StringDateComparator());
+        Collections.sort(arrImageInFolder, new ImageInFolderFragment.StringDateComparator());
         MainActivity.progressBar.setVisibility(View.GONE);
         displayImageInFolderAdapter = new DisplayImageInFolderAdapter(getContext(), arrImageInFolder);
         //  Log.e("datetime", "datetime dostuff " + " ? " + arrImage.size());

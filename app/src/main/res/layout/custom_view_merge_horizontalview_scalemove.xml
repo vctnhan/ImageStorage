@@ -29,5 +29,5 @@
         android:layout_height="100dp"
         android:layout_gravity="bottom"
         android:id="@+id/horizontalView"
-        app:amount="5"/>
+        app:amountItem="5"/>
 </merge>

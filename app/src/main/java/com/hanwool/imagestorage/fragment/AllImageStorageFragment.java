@@ -33,13 +33,13 @@ import java.util.Locale;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AllImageStorageFragment extends Fragment {
-    View view;
-    RecyclerView lstAllImage;
-    ArrayList<ImageStorage> arrayList;
+    private View view;
+    private RecyclerView lstAllImage;
+    private ArrayList<ImageStorage> arrayList;
     public static ArrayList<ImageStorage> arrImage;
-    AllImageStorageAdapter allImageStorageAdapter;
+    public static AllImageStorageAdapter allImageStorageAdapter;
     private boolean isFragmentLoaded = false;
-    File file;
+    private File file;
 
 
     public AllImageStorageFragment() {
@@ -50,7 +50,7 @@ public class AllImageStorageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.all_image_storage_fragment, container, false);
         MainActivity.progressBar.setVisibility(View.VISIBLE);
-       doStuff();
+        doStuff();
         new MyAsyncTask().execute();
         return view;
     }
@@ -67,6 +67,7 @@ public class AllImageStorageFragment extends Fragment {
         protected ArrayList<ImageStorage> doInBackground(String... strings) {
             return getFile(file);
         }
+
         @Override
         protected void onPostExecute(ArrayList<ImageStorage> arrImageStorages) {
             super.onPostExecute(arrImageStorages);
