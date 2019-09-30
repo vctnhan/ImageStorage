@@ -90,12 +90,10 @@ public class Custom_HorizonalView extends RelativeLayout {
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             ImageView imageView;
-            TextView txtview;
 
             public MyViewHolder(View view) {
                 super(view);
                 imageView = view.findViewById(R.id.imageview);
-                txtview = view.findViewById(R.id.txtview);
             }
         }
 
