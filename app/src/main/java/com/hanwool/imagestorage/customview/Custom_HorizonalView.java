@@ -44,7 +44,7 @@ public class Custom_HorizonalView extends RelativeLayout {
         this.context = context;
         initializeViews(context);
         horizontal_recycler_view = findViewById(R.id.horizontal_recycler_view);
-        data = fill_with_data();
+        data = FillWithData();
         horizontalAdapter = new HorizontalAdapter(data, getContext());
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         horizontal_recycler_view.setLayoutManager(horizontalLayoutManager);
@@ -65,25 +65,14 @@ public class Custom_HorizonalView extends RelativeLayout {
         return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
     }
 
-    public List<Data> fill_with_data() {
+    public List<Data> FillWithData() {
 
         List<Data> data = new ArrayList<>();
-//        for (int i = 0; i < size; i++) {
-//            int resourceId = this.getResources().
-//                    getIdentifier("R.drawable.vozis_"+(i+1), "string", context.getPackageName());
-//            data.add(new Data(resourceId));
-////            Toast.makeText(context,
-////                    String.valueOf(getDrawableId(context, "R.drawable.vozis_" + (i+1))),Toast.LENGTH_SHORT).show();
-//        }
+        for (int i = 1; i <= 43; i++) {
+            data.add(new Data(getResources().getIdentifier("drawable/"+"vozis_"+i, null, "com.hanwool.imagestorage")));
 
-        data.add(new Data(R.drawable.vozis_1));
-        data.add(new Data(R.drawable.vozis_2));
-        data.add(new Data(R.drawable.vozis_3));
-        data.add(new Data(R.drawable.vozis_4));;
-        data.add(new Data(R.drawable.vozis_5));
-        data.add(new Data(R.drawable.vozis_6));
-        data.add(new Data(R.drawable.vozis_7));
-
+        }
+        Toast.makeText(context,"namepackage: "+context.getPackageName(),Toast.LENGTH_LONG).show();
         return data;
     }
 
