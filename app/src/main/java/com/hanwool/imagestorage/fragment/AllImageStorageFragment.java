@@ -3,17 +3,19 @@ package com.hanwool.imagestorage.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hanwool.imagestorage.adapter.AllImageStorageAdapter;
 import com.hanwool.imagestorage.MainActivity;
@@ -27,10 +29,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AllImageStorageFragment extends Fragment {
     private View view;
@@ -38,9 +38,9 @@ public class AllImageStorageFragment extends Fragment {
     private ArrayList<ImageStorage> arrayList;
     public static ArrayList<ImageStorage> arrImage;
     public static AllImageStorageAdapter allImageStorageAdapter;
-    private boolean isFragmentLoaded = false;
     private File file;
-
+    private SwipeRefreshLayout pullToRefresh;
+    int refreshcounter = 1;
 
     public AllImageStorageFragment() {
     }
@@ -56,24 +56,24 @@ public class AllImageStorageFragment extends Fragment {
     }
 
     private void doStuff() {
-        lstAllImage = view.findViewById(R.id.lstAllImage);
-        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
         arrayList = new ArrayList<>();
         arrImage = new ArrayList<>();
+        lstAllImage = view.findViewById(R.id.lstAllImage);
+        pullToRefresh = view.findViewById(R.id.pullToRefresh);
+        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
     }
 
     private class MyAsyncTask extends AsyncTask<String, Void, ArrayList<ImageStorage>> {
         @Override
         protected ArrayList<ImageStorage> doInBackground(String... strings) {
+
             return getFile(file);
         }
 
         @Override
         protected void onPostExecute(ArrayList<ImageStorage> arrImageStorages) {
             super.onPostExecute(arrImageStorages);
-
             MainActivity.progressBar.setVisibility(View.GONE);
-
             for (int i = 0; i < arrImageStorages.size(); i++) {
                 ImageStorage imageStorage = arrImageStorages.get(i);
                 arrImage.add(new ImageStorage(imageStorage.getPath(), imageStorage.getDate()));
@@ -84,6 +84,17 @@ public class AllImageStorageFragment extends Fragment {
             lstAllImage.hasFixedSize();
             lstAllImage.setLayoutManager(new GridLayoutManager(getContext(), 3));
             lstAllImage.setAdapter(allImageStorageAdapter);
+            pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+                @Override
+                public void onRefresh() {
+                    if (refreshcounter == 1) {
+                        new MyAsyncTask().execute();
+                    }
+                    refreshcounter = 0;
+                    pullToRefresh.setRefreshing(false);
+                }
+            });
         }
     }
 
@@ -110,7 +121,6 @@ public class AllImageStorageFragment extends Fragment {
                             String format = "MM-dd-yyyy HH:mm:ss";
                             SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.ENGLISH);
                             String dt = formatter.format(new Date(String.valueOf(lastModifiedDate)));
-                            ;
                             arrayList.add(new ImageStorage(temp, dt));
 
                         }

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.hanwool.imagestorage.MainActivity;
@@ -28,30 +29,37 @@ import java.util.Comparator;
 public class FolderFragment extends Fragment {
     View view;
     ArrayList<FolderStorage> arrayList;
-   public static ArrayList<FolderStorage> arrFolder;
+    public static ArrayList<FolderStorage> arrFolder;
     FolderStorageAdapter folderStorageAdapter;
     RecyclerView lstFolder;
-    private boolean isFragmentLoaded =false;
+    private boolean isFragmentLoaded = false;
     File file;
-public static  ViewPager viewPager;
+    SwipeRefreshLayout pullToRefresh;
+    int refreshcounter = 1;
+
     public FolderFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.folder_fragment,container, false);
+        view = inflater.inflate(R.layout.folder_fragment, container, false);
+        doStuff();
+        new MyAsyncTask().execute();
         return view;
     }
+
     private void doStuff() {
 
         arrayList = new ArrayList<>();
         arrFolder = new ArrayList<>();
         lstFolder = view.findViewById(R.id.lstFolder);
-      file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-        new MyAsyncTask().execute();
+        pullToRefresh = view.findViewById(R.id.pullToRefresh);
+        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+
     }
-    private class MyAsyncTask extends AsyncTask<String, Void, ArrayList<FolderStorage>>{
+
+    private class MyAsyncTask extends AsyncTask<String, Void, ArrayList<FolderStorage>> {
 
         @Override
         protected ArrayList<FolderStorage> doInBackground(String... strings) {
@@ -63,33 +71,22 @@ public static  ViewPager viewPager;
         protected void onPostExecute(ArrayList<FolderStorage> arrFolderStorages) {
             super.onPostExecute(arrFolderStorages);
             MainActivity.progressBar.setVisibility(View.GONE);
-            for (FolderStorage a : arrFolderStorages) {
-                boolean isFound = false;
-                // check if the event name exists in noRepeat
-                for (FolderStorage e : arrFolder) {
-                    String tempA = a.getPath().substring(0, a.getPath().lastIndexOf('/'));
-                    String nameA = tempA.substring(tempA.lastIndexOf('/')).replace('/', ' ').trim();
-                    String tempB = e.getPath().substring(0, e.getPath().lastIndexOf('/'));
-                    String nameB = tempB.substring(tempB.lastIndexOf('/')).replace('/', ' ').trim();
-                    if (nameA.equalsIgnoreCase(nameB) || (e.equals(a))) {
-                        isFound = true;
-                        break;
-                    }
-                }
-                if (!isFound) arrFolder.add(a);
-            }
-            Collections.sort(arrFolder, new Comparator<FolderStorage>() {
-                @Override
-                public int compare(FolderStorage t1, FolderStorage t2) {
-                    String name1 = t1.getPath().substring(t1.getPath().lastIndexOf('/')).replace('/', ' ').trim();
-                    String name2 = t2.getPath().substring(t2.getPath().lastIndexOf('/')).replace('/', ' ').trim();
-                    return name1.compareToIgnoreCase(name2);
-                }
-            });
-            folderStorageAdapter = new FolderStorageAdapter(getContext(),arrFolder);
+            removeDuplicate(arrFolderStorages);
+            sortArr();
+            folderStorageAdapter = new FolderStorageAdapter(getContext(), arrFolder);
             lstFolder.hasFixedSize();
             lstFolder.setLayoutManager(new LinearLayoutManager(getContext()));
             lstFolder.setAdapter(folderStorageAdapter);
+            pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (refreshcounter == 1) {
+                        new MyAsyncTask().execute();
+                    }
+                    refreshcounter = 0;
+                    pullToRefresh.setRefreshing(false);
+                }
+            });
 //            Log.e("folder", "file2332 " + arrFolder.get(0).getPath());
 
         }
@@ -104,11 +101,41 @@ public static  ViewPager viewPager;
             isFragmentLoaded = true;
         }
     }
+
+    public void removeDuplicate(ArrayList<FolderStorage> arrFolderStorages) {
+        for (FolderStorage a : arrFolderStorages) {
+            boolean isFound = false;
+            // check if the event name exists in noRepeat
+            for (FolderStorage e : arrFolder) {
+                String tempA = a.getPath().substring(0, a.getPath().lastIndexOf('/'));
+                String nameA = tempA.substring(tempA.lastIndexOf('/')).replace('/', ' ').trim();
+                String tempB = e.getPath().substring(0, e.getPath().lastIndexOf('/'));
+                String nameB = tempB.substring(tempB.lastIndexOf('/')).replace('/', ' ').trim();
+                if (nameA.equalsIgnoreCase(nameB) || (e.equals(a))) {
+                    isFound = true;
+                    break;
+                }
+            }
+            if (!isFound) arrFolder.add(a);
+        }
+    }
+
+    public void sortArr() {
+        Collections.sort(arrFolder, new Comparator<FolderStorage>() {
+            @Override
+            public int compare(FolderStorage t1, FolderStorage t2) {
+                String name1 = t1.getPath().substring(t1.getPath().lastIndexOf('/')).replace('/', ' ').trim();
+                String name2 = t2.getPath().substring(t2.getPath().lastIndexOf('/')).replace('/', ' ').trim();
+                return name1.compareToIgnoreCase(name2);
+            }
+        });
+    }
+
     public ArrayList<FolderStorage> getFile(File dir) {
 
         File listFile[] = dir.listFiles();
         if (listFile != null && listFile.length > 0) {
-            for (int i =0; i <listFile.length; i++) {
+            for (int i = 0; i < listFile.length; i++) {
                 if (listFile[i].isDirectory()) {
                     getFile(listFile[i]);
                 } else {
@@ -117,7 +144,7 @@ public static  ViewPager viewPager;
                             || listFile[i].getName().endsWith(".jpeg")
                             || listFile[i].getName().endsWith(".gif")
                             || listFile[i].getName().endsWith(".bmp")) {
-                        String  path = listFile[i].getPath();
+                        String path = listFile[i].getPath();
 
 //
                         String tempB = path.substring(0, path.lastIndexOf('/'));

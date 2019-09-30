@@ -1,5 +1,6 @@
 package com.hanwool.imagestorage.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.hanwool.imagestorage.adapter.AllImageStorageAdapter;
 import com.hanwool.imagestorage.adapter.DisplayImageInFolderAdapter;
 import com.hanwool.imagestorage.adapter.FolderStorageAdapter;
 import com.hanwool.imagestorage.MainActivity;
@@ -28,6 +31,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.hanwool.imagestorage.fragment.AllImageStorageFragment.allImageStorageAdapter;
 
 public class ImageInFolderFragment extends Fragment {
     View view;
@@ -37,6 +41,8 @@ public class ImageInFolderFragment extends Fragment {
     DisplayImageInFolderAdapter displayImageInFolderAdapter;
     private boolean isFragmentLoaded = false;
     File file;
+    SwipeRefreshLayout pullToRefresh;
+    int refreshcounter = 1;
 
 
     public ImageInFolderFragment() {
@@ -47,6 +53,7 @@ public class ImageInFolderFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.display_img_in_folder_fragment, container, false);
         doStuff();
+        new MyAsyncTask().execute();
         return view;
     }
 
@@ -54,27 +61,47 @@ public class ImageInFolderFragment extends Fragment {
 
         arrayList = new ArrayList<>();
         lstAllImage = view.findViewById(R.id.lstAllImage);
+        pullToRefresh = view.findViewById(R.id.pullToRefresh);
         file = new File(FolderFragment.arrFolder.get(FolderStorageAdapter.index).getPath());
-        getFile(file);
         arrImageInFolder = new ArrayList<>();
-        for (int i = 0; i < arrayList.size(); i++) {
-            ImageStorage imageStorage = arrayList.get(i);
-            arrImageInFolder.add(new ImageStorage(imageStorage.getPath(), imageStorage.getDate()));
-        }
-        Log.e(TAG, "getFile: " + arrImageInFolder.get(0).getDate());
-        Collections.sort(arrImageInFolder, new ImageInFolderFragment.StringDateComparator());
-        MainActivity.progressBar.setVisibility(View.GONE);
-        displayImageInFolderAdapter = new DisplayImageInFolderAdapter(getContext(), arrImageInFolder);
-        //  Log.e("datetime", "datetime dostuff " + " ? " + arrImage.size());
-        lstAllImage.hasFixedSize();
-        lstAllImage.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        lstAllImage.setAdapter(displayImageInFolderAdapter);
-        // getFromStorage();
 
 
     }
+    private class MyAsyncTask extends AsyncTask<String, Void, ArrayList<ImageStorage>> {
+        @Override
+        protected ArrayList<ImageStorage> doInBackground(String... strings) {
 
-    public void getFile(File dir) {
+            return getFile(file);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ImageStorage> arrImageStorages) {
+            super.onPostExecute(arrImageStorages);
+            for (int i = 0; i <   arrImageStorages.size(); i++) {
+                ImageStorage imageStorage = arrImageStorages.get(i);
+                arrImageInFolder.add(new ImageStorage(imageStorage.getPath(), imageStorage.getDate()));
+            }
+            Collections.sort(arrImageInFolder, new ImageInFolderFragment.StringDateComparator());
+            MainActivity.progressBar.setVisibility(View.GONE);
+            displayImageInFolderAdapter = new DisplayImageInFolderAdapter(getContext(), arrImageInFolder);
+            lstAllImage.hasFixedSize();
+            lstAllImage.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            lstAllImage.setAdapter(displayImageInFolderAdapter);
+            pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+                @Override
+                public void onRefresh() {
+                    if (refreshcounter == 1) {
+                        new MyAsyncTask().execute();
+
+                    }
+                    refreshcounter = 0;
+                    pullToRefresh.setRefreshing(false);
+                }
+            });
+        }
+    }
+    public ArrayList<ImageStorage> getFile(File dir) {
 
         File listFile[] = dir.listFiles();
         if (listFile != null && listFile.length > 0) {
@@ -107,7 +134,7 @@ public class ImageInFolderFragment extends Fragment {
             }
         }
 
-
+return arrayList;
     }
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
