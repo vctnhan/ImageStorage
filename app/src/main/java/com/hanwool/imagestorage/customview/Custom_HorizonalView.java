@@ -68,11 +68,9 @@ public class Custom_HorizonalView extends RelativeLayout {
     public List<Data> FillWithData() {
 
         List<Data> data = new ArrayList<>();
-        for (int i = 1; i <= 43; i++) {
-            data.add(new Data(getResources().getIdentifier("drawable/"+"vozis_"+i, null, "com.hanwool.imagestorage")));
-
+        for (int i = 0; i < 43; i++) {
+            data.add(new Data(getResources().getIdentifier("drawable/"+"vozis_"+i, null, context.getPackageName())));
         }
-        Toast.makeText(context,"namepackage: "+context.getPackageName(),Toast.LENGTH_LONG).show();
         return data;
     }
 
