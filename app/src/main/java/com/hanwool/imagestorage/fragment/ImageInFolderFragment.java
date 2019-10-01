@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -93,7 +94,7 @@ public class ImageInFolderFragment extends Fragment {
                 public void onRefresh() {
                     if (refreshcounter == 1) {
                         new MyAsyncTask().execute();
-
+                        Toast.makeText(getContext(), "Loading...",Toast.LENGTH_SHORT).show();
                     }
                     refreshcounter = 0;
                     pullToRefresh.setRefreshing(false);

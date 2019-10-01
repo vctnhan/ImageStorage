@@ -44,6 +44,7 @@ boolean isFragmentLoaded = false;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.explorer_fragment, container, false);
+        doStuff();
         return view;
     }
 
@@ -64,6 +65,7 @@ private class MyAsyncTask extends AsyncTask<String,Void,ArrayList<FolderStorage>
     protected void onPostExecute(ArrayList<FolderStorage> arrFolderStorages) {
         super.onPostExecute(arrFolderStorages);
         MainActivity.progressBar.setVisibility(View.GONE);
+        myPath.setText("Location: " + root);
         dirAdapter = new DirAdapter(getContext(), arrFolderStorages);
         lstDir.setAdapter(dirAdapter);
         lstDir.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -97,7 +99,6 @@ private class MyAsyncTask extends AsyncTask<String,Void,ArrayList<FolderStorage>
     }
 }
     private ArrayList<FolderStorage> getDir(String dirPath) {
-        myPath.setText("Location: " + dirPath);
         item = new ArrayList<>();
         path = new ArrayList<>();
         File f = new File(dirPath);
