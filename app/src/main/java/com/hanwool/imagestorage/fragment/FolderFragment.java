@@ -70,7 +70,7 @@ public class FolderFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<FolderStorage> arrFolderStorages) {
             super.onPostExecute(arrFolderStorages);
-            MainActivity.progressBar.setVisibility(View.GONE);
+
             removeDuplicate(arrFolderStorages);
             sortArr();
             folderStorageAdapter = new FolderStorageAdapter(getContext(), arrFolder);
@@ -96,7 +96,7 @@ public class FolderFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && !isFragmentLoaded) {
-            MainActivity.progressBar.setVisibility(View.VISIBLE);
+
             doStuff();
             isFragmentLoaded = true;
         }

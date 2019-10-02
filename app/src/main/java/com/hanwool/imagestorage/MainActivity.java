@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     private static final int MY_PERMISSON_REQUEST = 1;
     public static final int REQ_CODE_SPEECH_INPUT = 100;
-    public static ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private void doStuff() {
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
-        progressBar = findViewById(R.id.proBar);
+
         viewPager.setOffscreenPageLimit(3);
         FragmentManager manager = getSupportFragmentManager();
         PagerAdapter adapter = new PagerCustomAdapter(manager);

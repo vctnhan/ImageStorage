@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -40,7 +41,8 @@ public class AllImageStorageFragment extends Fragment {
     public static AllImageStorageAdapter allImageStorageAdapter;
     private File file;
     private SwipeRefreshLayout pullToRefresh;
-    int refreshcounter = 1;
+    int refreshcounter = 0;
+    ProgressBar progressBar;
 
     public AllImageStorageFragment() {
     }
@@ -49,9 +51,19 @@ public class AllImageStorageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.all_image_storage_fragment, container, false);
-        MainActivity.progressBar.setVisibility(View.VISIBLE);
         doStuff();
+        progressBar.setVisibility(View.VISIBLE);
+
         new MyAsyncTask().execute();
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                progressBar.setVisibility(View.VISIBLE);
+                new UpdateAsyncTask().execute();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
         return view;
     }
 
@@ -60,7 +72,9 @@ public class AllImageStorageFragment extends Fragment {
         arrImage = new ArrayList<>();
         lstAllImage = view.findViewById(R.id.lstAllImage);
         pullToRefresh = view.findViewById(R.id.pullToRefresh);
+        progressBar = view.findViewById(R.id.proBar);
         file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+
     }
 
     private class MyAsyncTask extends AsyncTask<String, Void, ArrayList<ImageStorage>> {
@@ -71,9 +85,9 @@ public class AllImageStorageFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<ImageStorage> arrImageStorages) {
+        protected void onPostExecute(final ArrayList<ImageStorage> arrImageStorages) {
             super.onPostExecute(arrImageStorages);
-            MainActivity.progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
             for (int i = 0; i < arrImageStorages.size(); i++) {
                 ImageStorage imageStorage = arrImageStorages.get(i);
                 arrImage.add(new ImageStorage(imageStorage.getPath(), imageStorage.getDate()));
@@ -84,17 +98,22 @@ public class AllImageStorageFragment extends Fragment {
             lstAllImage.hasFixedSize();
             lstAllImage.setLayoutManager(new GridLayoutManager(getContext(), 3));
             lstAllImage.setAdapter(allImageStorageAdapter);
-            pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        }
+    }
+    private class UpdateAsyncTask extends AsyncTask<String, Void, ArrayList<ImageStorage>> {
+        @Override
+        protected ArrayList<ImageStorage> doInBackground(String... strings) {
 
-                @Override
-                public void onRefresh() {
-                    if (refreshcounter == 1) {
-                        new MyAsyncTask().execute();
-                    }
-                    refreshcounter = 0;
-                    pullToRefresh.setRefreshing(false);
-                }
-            });
+            return getFile(file);
+        }
+
+        @Override
+        protected void onPostExecute(final ArrayList<ImageStorage> arrImageStorages) {
+            super.onPostExecute(arrImageStorages);
+            progressBar.setVisibility(View.GONE);
+
+        allImageStorageAdapter.notifyDataSetChanged();
+
         }
     }
 

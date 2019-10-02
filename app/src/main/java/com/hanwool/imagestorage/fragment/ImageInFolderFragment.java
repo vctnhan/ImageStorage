@@ -83,7 +83,7 @@ public class ImageInFolderFragment extends Fragment {
                 arrImageInFolder.add(new ImageStorage(imageStorage.getPath(), imageStorage.getDate()));
             }
             Collections.sort(arrImageInFolder, new ImageInFolderFragment.StringDateComparator());
-            MainActivity.progressBar.setVisibility(View.GONE);
+
             displayImageInFolderAdapter = new DisplayImageInFolderAdapter(getContext(), arrImageInFolder);
             lstAllImage.hasFixedSize();
             lstAllImage.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -95,8 +95,11 @@ public class ImageInFolderFragment extends Fragment {
                     if (refreshcounter == 1) {
                         new MyAsyncTask().execute();
                         Toast.makeText(getContext(), "Loading...",Toast.LENGTH_SHORT).show();
+                        refreshcounter = 0;
                     }
-                    refreshcounter = 0;
+                   if (refreshcounter == 0) {
+                      pullToRefresh.setEnabled(false);
+                   }
                     pullToRefresh.setRefreshing(false);
                 }
             });

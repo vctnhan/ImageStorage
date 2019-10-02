@@ -39,12 +39,12 @@ public class ExplorerFragment extends Fragment {
     ListView lstDir;
     public static ArrayList<PathAndName> arrDir;
     File file;
-boolean isFragmentLoaded = false;
+    boolean isFragmentLoaded = false;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.explorer_fragment, container, false);
-        doStuff();
         return view;
     }
 
@@ -54,19 +54,8 @@ boolean isFragmentLoaded = false;
         arrDir = new ArrayList<>();
         root = Environment.getExternalStorageDirectory().getAbsolutePath();
         Log.e(TAG, "onCreate: " + root);
-        new MyAsyncTask().execute();
-    }
-private class MyAsyncTask extends AsyncTask<String,Void,ArrayList<FolderStorage>>{
-    @Override
-    protected ArrayList<FolderStorage> doInBackground(String... strings) {
-        return getDir(root);
-    }
-    @Override
-    protected void onPostExecute(ArrayList<FolderStorage> arrFolderStorages) {
-        super.onPostExecute(arrFolderStorages);
-        MainActivity.progressBar.setVisibility(View.GONE);
-        myPath.setText("Location: " + root);
-        dirAdapter = new DirAdapter(getContext(), arrFolderStorages);
+
+        dirAdapter = new DirAdapter(getContext(), getDir(root));
         lstDir.setAdapter(dirAdapter);
         lstDir.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -74,12 +63,9 @@ private class MyAsyncTask extends AsyncTask<String,Void,ArrayList<FolderStorage>
                 file = new File(path.get(i).getPath());
 
                 if (file.isDirectory()) {
-                    if (file.canRead())
-                    {
+                    if (file.canRead()) {
                         getDir(path.get(i).getPath());
-                    }
-
-                    else {
+                    } else {
                         new AlertDialog.Builder(getActivity())
                                 .setIcon(R.drawable.ic_launcher_background)
                                 .setTitle("[" + file.getName() + "] folder can't be read!")
@@ -90,15 +76,16 @@ private class MyAsyncTask extends AsyncTask<String,Void,ArrayList<FolderStorage>
                                 }).show();
                     }
 
-                }
-                else {
+                } else {
 
                 }
             }
         });
+
     }
-}
+
     private ArrayList<FolderStorage> getDir(String dirPath) {
+        myPath.setText("Location: " + dirPath);
         item = new ArrayList<>();
         path = new ArrayList<>();
         File f = new File(dirPath);
@@ -124,11 +111,11 @@ private class MyAsyncTask extends AsyncTask<String,Void,ArrayList<FolderStorage>
 //
         return item;
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && !isFragmentLoaded) {
-            MainActivity.progressBar.setVisibility(View.VISIBLE);
             doStuff();
             isFragmentLoaded = true;
         }

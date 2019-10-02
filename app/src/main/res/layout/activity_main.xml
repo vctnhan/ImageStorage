@@ -15,12 +15,7 @@
         android:background="#86888d"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
         />
-    <ProgressBar
-        android:id="@+id/proBar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:visibility="visible"/>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"

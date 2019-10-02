@@ -52,7 +52,7 @@ public class DisplayImageActivity extends AppCompatActivity {
         }
         Log.e(TAG, "getFiledusss: " + arrImage.get(0).getDate());
         Collections.sort(arrImage, new StringDateComparator());
-        MainActivity.progressBar.setVisibility(View.GONE);
+
         allImageInFolderStorageAdapter = new DisplayImageInFolderAdapter(DisplayImageActivity.this, arrImage);
         //  Log.e("datetime", "datetime dostuff " + " ? " + arrImage.size());
         lstAllImage.hasFixedSize();
